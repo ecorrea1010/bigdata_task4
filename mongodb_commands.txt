@@ -1,0 +1,48 @@
+db.products.insertOne({
+  "name": "Exfoliante Corporal",
+  "category": "exfoliantes",
+  "price_base": 65900,
+  "description": "Exfoliante en gel para manos y cuerpo",
+  "specs": {
+    "volumen": "100g",
+    "ingredientes": ["Uña de gato", "Glicerina", "Betaína"],
+    "aplicación": "día y noche"
+  },
+  "stock": 58,
+  "code": "EC107",
+  "tags": ["exfoliante", "natural", "hidratante"],
+  "available": true
+});
+
+db.products.updateOne(
+  { "code": "PM044" },
+  { 
+    $set: {
+      "price_base": 20000,
+      "stock": 20
+    }
+  }
+);
+
+db.products.deleteOne({ "_id": ObjectId("67425ce89d4049c0d5f3487f") });
+
+-------------
+Consultas
+db.products.find({
+  "category": "skincare",
+  "available": true
+}).pretty();
+
+db.products.find({
+  "price_base": {$gte: 45000, $lte: 100000},
+  "stock": {$gt: 10}
+}).pretty();
+
+db.products.aggregate([
+  {$match: {"category": "skincare"}},
+  {$group: {
+    _id: null,
+    avgPrice: {$avg: "$price_base"}
+  }}
+]);
+
